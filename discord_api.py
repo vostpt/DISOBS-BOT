@@ -5,7 +5,8 @@ from dotenv import load_dotenv
 dotenv_path = join(dirname(__file__), 'keys.env')
 load_dotenv(dotenv_path)
 author_restrict = os.getenv('AUTHOR_RESTRICT') in ['true', 'True']
-authorized_authors = os.getenv('AUTHORIZED_AUTHORS').split(', ')
+authorized_authors = os.getenv('AUTHORIZED_AUTHORS').split(',')
+authorized_roles = os.getenv('AUTHORIZED_ROLES').split(',')
 
 client = discord.Client()
 message_list = []
@@ -19,15 +20,17 @@ msg_final_separator = '                                     '
 
 @client.event
 async def on_message(message):
-
 	channel = message.channel
 	# we do not want the bot to reply to itself
 	if message.author == client.user or channel != channel_obs:
 		return
 
 	elif message.content.startswith(trigger_stop):
-		await channel.send('Bot vai desligar')
-		quit()
+		if checkAuthorization(message.author):
+			await channel.send('{0.author.mention}, o bot vai desligar'.format(message))
+			quit()
+		else:
+			await channel.send('{0.author.mention}, não tens autorização para desligar o bot'.format(message))
 
 	elif message.content.startswith(trigger_rm):
 		await channel.send(removeFooter(message))
@@ -41,9 +44,20 @@ async def on_message(message):
 	elif message.content.startswith(trigger_help):
 		await channel.send(help(message))
 
+def checkAuthorization(author):
+	if author.name in authorized_authors:
+		return True
+	else:
+		print(str(author.roles))
+		for i in author.roles:
+			print(str(i))
+			if i.name in authorized_roles:
+				return True
+	return False
+
 def addFooter(message):
 	author = message.author
-	if author.name in authorized_authors:
+	if checkAuthorization(author):
 		msg = message.content.split(trigger_add,1)[1]
 		message_list.append([author, msg])
 		writeOnFile()
