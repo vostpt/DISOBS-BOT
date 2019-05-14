@@ -45,7 +45,7 @@ async def on_message(message):
 		await channel.send(help(message))
 
 def checkAuthorization(author):
-	if author.name in authorized_authors:
+	if author.name in authorized_authors or author_restrict == False:
 		return True
 	else:
 		print(str(author.roles))
@@ -70,7 +70,7 @@ def removeFooter(message):
 	id_msg = int(msg)-1
 	if id_msg > len(message_list):
 		return ('{0.author.mention} ID inválido, tenta outra vez!\n').format(message) + help(message)
-	elif (message.author.name in authorized_authors) or author_restrict == False:
+	elif checkAuthorization(message.author):
 		del message_list[id_msg]
 		writeOnFile()
 		return ('{0.author.mention} Mensagem apagada!').format(message)
