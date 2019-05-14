@@ -103,11 +103,13 @@ def help(message):
 	if author_restrict == True:
 		msg += '!type <mensagem> - Envia uma mensagem para rodapé (só os users autorizados podem adicionar mensagens)\n'
 		msg += '!type rm <id> - Remove uma mensagem de rodapé (só os users autorizados podem eliminar mensagens)\n'
+		msg += '!type id - Mostra os ids das mensagens\n'
+		msg += '!type stop - Desliga o bot (só os users autorizados podem desligar o bot)'
 	else:
 		msg += '!type <mensagem> - Envia uma mensagem para rodapé (todos os users podem adicionar mensagens)\n'
 		msg += '!type rm <id> - Remove uma mensagem de rodapé (todos os users podem eliminar mensagens)\n'
-	msg += '!type id - Mostra os ids das mensagens\n'
-	msg += '!type stop - Desliga o bot'
+		msg += '!type id - Mostra os ids das mensagens\n'
+		msg += '!type stop - Desliga o bot'
 	return msg.format(message)
 
 @client.event
@@ -124,11 +126,13 @@ async def on_ready():
 	if author_restrict == True:
 		msg += '!type <mensagem> - Envia uma mensagem para rodapé (só os users autorizados podem adicionar mensagens)\n'
 		msg += '!type rm <id> - Remove uma mensagem de rodapé (só os users autorizados podem eliminar mensagens)\n'
+		msg += '!type id - Mostra os ids das mensagens\n'
+		msg += '!type stop - Desliga o bot (só os users autorizados podem desligar o bot)'
 	else:
 		msg += '!type <mensagem> - Envia uma mensagem para rodapé (todos os users podem adicionar mensagens)\n'
 		msg += '!type rm <id> - Remove uma mensagem de rodapé (todos os users podem eliminar mensagens)\n'
-	msg += '!type id - Mostra os ids das mensagens\n'
-	msg += '!type stop - Desliga o bot'
+		msg += '!type id - Mostra os ids das mensagens\n'
+		msg += '!type stop - Desliga o bot'
 	await channel_obs.send(msg)
 
 client.run(os.getenv('DISCORD_TOKEN'))
