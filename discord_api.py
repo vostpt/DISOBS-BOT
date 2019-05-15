@@ -29,8 +29,7 @@ async def on_message(message):
 		if checkAuthorization(message.author):
 			await channel.send('{0.author.mention}, o bot vai desligar'.format(message))
 			quit()
-		else:
-			await channel.send('{0.author.mention}, não tens autorização para desligar o bot'.format(message))
+		await channel.send('{0.author.mention}, não tens autorização para desligar o bot'.format(message))
 
 	elif message.content.startswith(trigger_rm):
 		await channel.send(removeFooter(message))
@@ -47,12 +46,9 @@ async def on_message(message):
 def checkAuthorization(author):
 	if author.name in authorized_authors or author_restrict == False:
 		return True
-	else:
-		print(str(author.roles))
-		for i in author.roles:
-			print(str(i))
-			if i.name in authorized_roles:
-				return True
+	for i in author.roles:
+		if i.name in authorized_roles:
+			return True
 	return False
 
 def addFooter(message):
@@ -62,8 +58,7 @@ def addFooter(message):
 		message_list.append([author, msg])
 		writeOnFile()
 		return ('{0.author.mention} Mensagem adicionada: ' + msg).format(message)
-	else:
-		return ('{0.author.mention} Não tens autorização para adicionar mensagens, mensagem não adicionada').format(message)
+	return ('{0.author.mention} Não tens autorização para adicionar mensagens, mensagem não adicionada').format(message)
 
 def removeFooter(message):
 	msg = message.content.split(trigger_rm,1)[1]
@@ -74,18 +69,16 @@ def removeFooter(message):
 		del message_list[id_msg]
 		writeOnFile()
 		return ('{0.author.mention} Mensagem apagada!').format(message)
-	else:
-		return ('{0.author.mention} Não tens autorização para eliminar mensagens, mensagem não apagada').format(message)
+	return ('{0.author.mention} Não tens autorização para eliminar mensagens, mensagem não apagada').format(message)
 
 def showFooterMsgId(message):
 	if len(message_list) < 1:
 		return ('Não há mensagens inseridas no rodapé')
-	else:
-		resp = 'Lista de mensagens inseridas no rodapé: \n'
-		resp += '<autor> - <id> - <mensagem>\n'
-		for x in message_list:
-			resp += ('<@' + str(x[0].id) + '>' + ' - ' + str(message_list.index(x)+1) + ' - "' + x[1] + '"\n')
-		return resp.format(message)
+	resp = 'Lista de mensagens inseridas no rodapé: \n'
+	resp += '<autor> - <id> - <mensagem>\n'
+	for x in message_list:
+		resp += ('<@' + str(x[0].id) + '>' + ' - ' + str(message_list.index(x)+1) + ' - "' + x[1] + '"\n')
+	return resp.format(message)
 
 def writeOnFile():
 	footer = ''
@@ -99,18 +92,17 @@ def writeOnFile():
 
 def help(message):
 	msg = '{0.author.mention} Aqui tens os comandos:\n'
-	msg += '!type <mensagem> - Envia uma mensagem para rodapé\n'
+	return (msg + commands_msg()).format(message)
+
+def commands_msg():
+	msg = '?type - Mostra os comandos disponíveis\n'
+	msg += '**Comandos permitidos para todos:**\n!type id - Mostra os ids das mensagens\n'
 	if author_restrict == True:
-		msg += '!type <mensagem> - Envia uma mensagem para rodapé (só os users autorizados podem adicionar mensagens)\n'
-		msg += '!type rm <id> - Remove uma mensagem de rodapé (só os users autorizados podem eliminar mensagens)\n'
-		msg += '!type id - Mostra os ids das mensagens\n'
-		msg += '!type stop - Desliga o bot (só os users autorizados podem desligar o bot)'
-	else:
-		msg += '!type <mensagem> - Envia uma mensagem para rodapé (todos os users podem adicionar mensagens)\n'
-		msg += '!type rm <id> - Remove uma mensagem de rodapé (todos os users podem eliminar mensagens)\n'
-		msg += '!type id - Mostra os ids das mensagens\n'
-		msg += '!type stop - Desliga o bot'
-	return msg.format(message)
+		msg += '**Comandos para users autorizados:**\n'
+	msg += '!type <mensagem> - Envia uma mensagem para rodapé\n'
+	msg += '!type rm <id> - Remove uma mensagem de rodapé\n'
+	msg += '!type stop - Desliga o bot\n'
+	return msg
 
 @client.event
 async def on_ready():
@@ -121,18 +113,7 @@ async def on_ready():
 	print(client.user.name)
 	print(client.user.id)
 	print('------')
-	msg = 'Vai começar um livestream da VOST! Comandos para controlar o rodapé:\n'
-	msg += '?type - Mostra os comandos disponíveis\n'
-	if author_restrict == True:
-		msg += '!type <mensagem> - Envia uma mensagem para rodapé (só os users autorizados podem adicionar mensagens)\n'
-		msg += '!type rm <id> - Remove uma mensagem de rodapé (só os users autorizados podem eliminar mensagens)\n'
-		msg += '!type id - Mostra os ids das mensagens\n'
-		msg += '!type stop - Desliga o bot (só os users autorizados podem desligar o bot)'
-	else:
-		msg += '!type <mensagem> - Envia uma mensagem para rodapé (todos os users podem adicionar mensagens)\n'
-		msg += '!type rm <id> - Remove uma mensagem de rodapé (todos os users podem eliminar mensagens)\n'
-		msg += '!type id - Mostra os ids das mensagens\n'
-		msg += '!type stop - Desliga o bot'
-	await channel_obs.send(msg)
+	msg = '**Vai começar um livestream da VOST!**\n'
+	await channel_obs.send(msg + commands_msg())
 
 client.run(os.getenv('DISCORD_TOKEN'))
