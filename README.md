@@ -44,6 +44,7 @@ DISCORD_TOKEN = <Discord bot token>
 CHANNEL_ID = <Discord channel ID>
 AUTHOR_RESTRICT = true
 AUTHORIZED_AUTHORS = <list of authorized Discord users, separated by comma>
+AUTHORIZED_ROLES = <list of authorized Discord roles, separated by comma>
 ```
 
 # Execute bot
