@@ -44,6 +44,7 @@ DISCORD_TOKEN = <Discord bot token>
 CHANNEL_ID = <Discord channel ID>
 AUTHOR_RESTRICT = true
 AUTHORIZED_AUTHORS = <list of authorized Discord users, separated by comma>
+AUTHORIZED_ROLES = <list of authorized Discord roles, separated by comma>
 ```
 
 # Execute bot
@@ -52,16 +53,16 @@ AUTHORIZED_AUTHORS = <list of authorized Discord users, separated by comma>
 
 Open command line (cmd), and execute the following command in DISOBS-BOT folder:
 ```sh
-discord_api.py
+bot.py
 ```
 
 ## Linux
 
 Open terminal, and execute the following command in DISOBS-BOT folder:
 ```sh
-python3 discord_api.py
+python3 bot.py
 ```
 
 ## OBS
 
-After bot starts, open OBS, select the text option, and choose the import from file option, select `footer.txt`, and enjoy!
+After bot starts, open OBS, select the text option, and choose the import from file option, select one or more `.txt` files, and enjoy!
