@@ -1,4 +1,3 @@
-
 MSG_SEPARATOR = '|'
 MSG_FINAL_SEPARATOR = '                                     '
 
@@ -27,12 +26,11 @@ class ObsFooter:
 		
 		if msg_id > len(self.content_list):
 			return False
-		
-		else:
-			del self.content_list[msg_id]
-			self.parse_to_file()
 
-			return True
+		del self.content_list[msg_id]
+		self.parse_to_file()
+
+		return True
 
 	def get_message_ids(self):
 		if len(self.content_list) < 1:
@@ -49,14 +47,12 @@ class ObsFooter:
 	def parse_to_file(self):
 		footer = ''
 
-		if len(self.content_list) > 0:
-			for i in range(len(self.content_list)-1):
-				footer += self.content_list[i][1] + ' ' + MSG_SEPARATOR + ' '
+		for i in range(len(self.content_list)-1):
+			footer += self.content_list[i][1] + ' ' + MSG_SEPARATOR + ' '
 		
 		footer += self.content_list[len(self.content_list)-1][1] + MSG_FINAL_SEPARATOR
 
 		write_to_file(self.file_name, footer)
-
 
 class ObsField:
 
@@ -83,12 +79,11 @@ class ObsField:
 		
 		if len(self.content) < 2:
 			return False
-		
-		else:
-			self.content = []
-			self.parse_to_file()
 
-			return True
+		self.content = []
+		self.parse_to_file()
+
+		return True
 
 	def get_message_ids(self):
 		if len(self.content) < 2:
@@ -119,10 +114,10 @@ def help(author_restrict):
 def commands_msg(author_restrict):
 	msg = '**Comandos permitidos para todos:**\n?type - Mostra os comandos disponíveis\n'
 	msg += '!type id - Mostra todos os campos (nos campos do tipo rodapé também é exibido o id das mensagens)\n'
-	
+
 	if author_restrict == True:
 		msg += '**Comandos permitidos apenas para users autorizados:**\n'
-	
+
 	msg += '!type add <id campo> <mensagem> - Envia uma mensagem para rodapé\n'
 	msg += '!type rm <id campo> <id mensagem> - Remove uma mensagem de rodapé\n'
 	msg += '!type stop - Desliga o bot\n'

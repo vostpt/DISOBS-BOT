@@ -71,7 +71,6 @@ async def on_message(message):
 		else:
 			await channel.send('{0.author.mention}, comando com argumentos insuficientes'.format(message))
 
-
 def get_field(field_id):
 	for i in range(len(fields)):
 
