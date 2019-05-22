@@ -30,6 +30,8 @@ client = discord.Client()
 @client.event
 async def on_message(message):
 	channel = message.channel
+
+	no_command = False
 	
 	if message.author == client.user or channel != discord_channel:
 		return
@@ -53,7 +55,7 @@ async def on_message(message):
 					await channel.send(remove_message(field_pos, message.author, msg[3]).format(message))
 
 			else:
-				await channel.send('{0.author.mention}, Campo não encontrado'.format(message))
+				no_command = True
 
 		#Commands with 2 minimum arguments (Trigger + command)
 		elif len(msg) > 1:
@@ -68,8 +70,14 @@ async def on_message(message):
 			elif msg[1] == COMMAND_ENUM:
 				await channel.send(get_all_message_ids(message).format(message))
 
+			else:
+				no_command = True
+
 		else:
-			await channel.send('{0.author.mention}, comando com argumentos insuficientes'.format(message))
+			no_command = True
+
+		if no_command == True:
+			await channel.send(('{0.author.mention}, comando inválido\n' + commands_msg()).format(message))
 
 def get_field(field_id):
 	for i in range(len(fields)):
