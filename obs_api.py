@@ -1,3 +1,5 @@
+import codecs
+
 MSG_SEPARATOR = '|'
 MSG_FINAL_SEPARATOR = '                                     '
 
@@ -102,9 +104,10 @@ class ObsField:
 
 def write_to_file(file_name, content=''):
 
-	file = open(file_name, "w")
-	file.write(content)
-	file.close()
+	obs_file = codecs.open(file_name, "w", "utf-8-sig")
+
+	obs_file.write(content)
+	obs_file.close()
 
 def help(author_restrict):
 	msg = '{0.author.mention} Aqui tens os comandos:\n'
