@@ -48,6 +48,7 @@ async def on_message(message):
 			field_pos = get_field(msg[2])
 
 			if field_pos != -1:
+
 				if msg[1] == COMMAND_ADD:
 					await channel.send(add_message(field_pos, message.author, msg[3]).format(message))
 
@@ -111,8 +112,8 @@ def add_message(field_pos, author, msg):
 	return ('{0.author.mention} Não tens autorização para adicionar mensagens, mensagem não adicionada')
 
 def remove_message(field_pos, author, msg):
-	if isinstance(fields[field_pos], ObsFooter):
-		id_msg = int(msg.split(COMMAND_RM,1)[1])-1
+	if isinstance(fields[field_pos], obs_api.ObsFooter):
+		id_msg = int(msg)-1
 
 	if check_authorization(author):
 
