@@ -34,6 +34,11 @@ class ObsFooter:
 
 		return True
 
+	def remove_all(self):
+		self.content = []
+		self.parse_to_file()
+
+
 	def get_message_ids(self):
 		if len(self.content_list) < 1:
 			return ('Não há mensagens inseridas no rodapé\n')
@@ -48,11 +53,13 @@ class ObsFooter:
 
 	def parse_to_file(self):
 		footer = ''
-
-		for i in range(len(self.content_list)-1):
-			footer += self.content_list[i][1] + ' ' + MSG_SEPARATOR + ' '
+		content_list_size = len(self.content_list)
 		
-		footer += self.content_list[len(self.content_list)-1][1] + MSG_FINAL_SEPARATOR
+		if content_list_size > 0:
+			for i in range(len(self.content_list)-1):
+				footer += self.content_list[i][1] + ' ' + MSG_SEPARATOR + ' '
+			
+			footer += self.content_list[len(self.content_list)-1][1] + MSG_FINAL_SEPARATOR
 
 		write_to_file(self.file_name, footer)
 
@@ -86,6 +93,10 @@ class ObsField:
 		self.parse_to_file()
 
 		return True
+
+	def remove_all(self):
+		self.content = []
+		self.parse_to_file()
 
 	def get_message_ids(self):
 		if len(self.content) < 2:
